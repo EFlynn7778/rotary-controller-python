@@ -31,6 +31,7 @@ THREAD_IN = [
     FeedConfiguration(name="40", ratio=Fraction("254/400"), mode=2),
     FeedConfiguration(name="32", ratio=Fraction("254/320"), mode=2),
     FeedConfiguration(name="30", ratio=Fraction("254/300"), mode=2),
+    FeedConfiguration(name="28", ratio=Fraction("254/280"), mode=2),
     FeedConfiguration(name="24", ratio=Fraction("254/240"), mode=2),
     FeedConfiguration(name="20", ratio=Fraction("254/200"), mode=2),
     FeedConfiguration(name="18", ratio=Fraction("254/180"), mode=2),
