@@ -10,6 +10,9 @@ Switches added for these features, and font selection added to the renamed "Sett
 Various layout "improvements" for personal preference and overal ease of usability.
 
 
+NOT tested with the controller hardware yet, as I have yet to acquire/build. Should work fine as no chages were made that should affect functionality.
+
+
 # Rotary Controller Python
 
 This project is a Kivy based user interface developed for the Raspberry PI for the control of rotary tables and
