@@ -1,3 +1,12 @@
+# Modifications to RCP for Lathe Centric Use.
+
+UI Modifications For Lathe Specific Use and personal preference.  
+Added ability to select font used for DRO's. 
+Added ability to hide feed speed and numerator/denominator panel to clean up UI for general use. 
+Switches added for these features, and font selection added to the renamed "Settings" (formerly "formats") page.
+Various layout "improvements" for personal preference and overal ease of usability.
+
+
 # Rotary Controller Python
 
 This project is a Kivy based user interface developed for the Raspberry PI for the control of rotary tables and
