@@ -50,15 +50,15 @@ class HomeToolbar(BoxLayout):
         self.add_widget(current_offset)
 
         # Magic Wand Button
-        def popup_scene(*_):
-            ScenePopup().open()
-        magic_wand = ToolbarButton(
-            font_name="fonts/Font Awesome 6 Free-Solid-900.otf",
-            text="\ue2ca",
-            width = self.width,
-            on_release=popup_scene,
-        )
-        self.add_widget(magic_wand)
+       # def popup_scene(*_):
+       #     ScenePopup().open()
+       # magic_wand = ToolbarButton(
+       #     font_name="fonts/Font Awesome 6 Free-Solid-900.otf",
+       #     text="\ue2ca",
+       #     width = self.width,
+       #     on_release=popup_scene,
+       # )
+       # self.add_widget(magic_wand)
 
         # Mode Button
         def update_current_mode(*_):

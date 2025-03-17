@@ -4,20 +4,13 @@
 <JogBar>:
   orientation: "horizontal"
   size_hint_y: None
-  height: 128
+  height: 100
 
   BoxLayout:
-    size_hint_x: 0.3
+    size_hint_x: 0.5
     orientation: 'vertical'
-    Label:
-      text: "Des.Speed"
-      font_size: self.height / 1.75
-      size_hint_y: 0.3
-      color: app.formats.display_color
-      halign: 'center'
-      valign: 'top'
     Button:
-      size_hint_y: 0.4
+      size_hint_y: 0.7
       font_name: "fonts/iosevka-regular.ttf"
       font_size: self.height / 1.75
       font_style: "bold"
@@ -29,52 +22,52 @@
       valign: 'middle'
       on_release: Factory.Keypad().show(root, 'desired_speed')
     Label:
-      text: "Max: {}".format(app.servo.maxSpeed)
+      text: "Set Speed"
       font_size: self.height / 1.75
       size_hint_y: 0.3
-      color: app.formats.display_color
+      #color: app.formats.display_color
       halign: 'center'
-      valign: 'top'
+      valign: 'top'  
+   # Label:
+  #  text: "Max: {}".format(app.servo.maxSpeed)
+  #    font_size: self.height / 1.75
+  #    size_hint_y: 0.3
+  #    #color: app.formats.display_color
+  #    halign: 'center'
+  #    valign: 'top'
 
-  BoxLayout:
-    size_hint_x: 0.3
-    orientation: 'vertical'
-    Label:
-      text: "Curr.Speed"
-      font_size: self.height / 1.75
-      size_hint_y: 0.3
-      color: app.formats.display_color
-      halign: 'center'
-      valign: 'top'
-    Button:
-      size_hint_y: 0.4
-      font_name: "fonts/iosevka-regular.ttf"
-      font_size: self.height / 1.75
-      font_style: "bold"
-      background_color: [0.3, 0.3, 0.3, 1]
-      color: app.formats.display_color
-      text: str(int(app.servo.speed))
-      text_size: self.size
-      halign: 'center'
-      valign: 'middle'
-    Label:
-      text: "Acc: {}".format(app.servo.acceleration)
-      font_size: self.height / 1.75
-      size_hint_y: 0.3
-      color: app.formats.display_color
-      halign: 'center'
-      valign: 'top'
+#  BoxLayout:
+#    size_hint_x: 0.3
+#    orientation: 'vertical'
+#    Label:
+#      text: "Curr.Speed"
+#      font_size: self.height / 1.75
+#      size_hint_y: 0.3
+#      #color: app.formats.display_color
+#      halign: 'center'
+#      valign: 'top'
+#    Button:
+#      size_hint_y: 0.4
+#      font_name: "fonts/iosevka-regular.ttf"
+#      font_size: self.height / 1.75
+#      font_style: "bold"
+#      background_color: [0.3, 0.3, 0.3, 1]
+#      color: app.formats.display_color
+#      text: str(int(app.servo.speed))
+#      text_size: self.size
+#      halign: 'center'
+#      valign: 'middle'
+#    Label:
+#      text: "Acc: {}".format(app.servo.acceleration)
+#      font_size: self.height / 1.75
+#      size_hint_y: 0.3
+#      #color: app.formats.display_color
+#      halign: 'center'
+#      valign: 'top'
 
   BoxLayout:
     size_hint_x: 0.5
     orientation: 'vertical'
-    Label:
-      text: "Position"
-      font_size: self.height / 1.75
-      size_hint_y: 0.3
-      color: app.formats.display_color
-      halign: 'center'
-      valign: 'top'
     Button:
       size_hint_y: 0.7
       font_name: "fonts/iosevka-regular.ttf"
@@ -86,7 +79,13 @@
       text_size: self.size
       halign: 'center'
       valign: 'middle'
-
+    Label:
+      text: "Position"
+      font_size: self.height / 1.75
+      size_hint_y: 0.3
+      #color: app.formats.display_color
+      halign: 'center'
+      valign: 'top'
   Button:
     width: self.height
     size_hint_x: 0.5

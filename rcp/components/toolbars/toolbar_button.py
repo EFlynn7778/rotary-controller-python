@@ -16,4 +16,4 @@ class ToolbarButton(Button):
         self.update_height(self, self.width)
 
     def update_height(self, instance, value):
-        self.height = self.width
+        self.height = 150

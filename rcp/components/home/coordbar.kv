@@ -13,6 +13,16 @@
     background_color: [0.2, 1, 0.2, 1] if root.syncEnable else [0.3, 0.3, 0.3, 1]
     on_release: root.toggle_sync()
 
+  ImageButton:
+#    text: "Zero"
+    source: "pictures/zero-icon-white.png"
+    font_size: 24
+    font_style: "bold"
+    background_color: [0.5, 0.5, 0.5, 1]
+    width: self.height / 1.8
+    size_hint_x: None
+    on_release: root.zero_position()
+
   BoxLayout:
     orientation: "horizontal"
     BoxLayout:
@@ -21,40 +31,72 @@
       Button:
         background_color: (0, 0, 0, 1)
         id: pos_label
-        size_hint_y: 0.7
-        font_name: "fonts/iosevka-regular.ttf"
-        font_size: self.height / 1.5
-        font_style: "bold"
+        # When speed label is hidden, use full height
+        size_hint_y: 1.0 if not app.formats.show_speed_label else 0.7
+        font_name: app.formats.display_font
+        font_size: self.height / 1
         color: app.formats.display_color
         text: root.formattedPosition
         text_size: self.size
+        padding_x: dp(30)  # Add horizontal padding
         halign: 'right'
         valign: 'center'
-        on_release: root.update_position()
+        on_release: root.update_position() 
       Label:
-        size_hint_y: 0.3
+        # Hide completely by setting size_hint to 0 when disabled
+        size_hint_y: 0.3 if app.formats.show_speed_label else 0
+        height: 0 if not app.formats.show_speed_label else self.parent.height * 0.3
+        opacity: 1 if app.formats.show_speed_label else 0
         font_name: "fonts/iosevka-regular.ttf"
         font_size: self.height / 1.5
         font_style: "bold"
         color: app.formats.display_color
         text: root.formattedSpeed
         text_size: self.size
+        padding_x: dp(30)  # Add horizontal padding
         halign: 'right'
         valign: 'top'
 
+   #Numerator/Denomenator Settings  
     BoxLayout:
       size_hint_x: None
-      width: 100
+      width: 20 if app.formats.show_numdec_panel else 0
+      opacity: 1 if app.formats.show_numdec_panel else 0
       orientation: 'vertical'
-      Label:
-        text: "Num"
-        font_size: self.height / 1.5
-        size_hint_y: 0.3
-        color: app.formats.display_color
-        halign: 'center'
-        valign: 'top'
+
       Button:
-        size_hint_y: 0.7
+        size_hint_y: 0.5
+        font_name: "fonts/iosevka-regular.ttf"
+        font_size: self.height / 2
+        #font_style: "bold"
+        background_color: [0.3, 0.3, 0.3, 1]
+        text: "N"
+        text_size: self.size
+        halign: 'center'
+        valign: 'middle'
+        disabled: not app.formats.show_numdec_panel
+
+
+      Button:
+        size_hint_y: 0.5
+        font_name: "fonts/iosevka-regular.ttf"
+        font_size: self.height / 2
+        #font_style: "bold"
+        background_color: [0.3, 0.3, 0.3, 1]
+        text: "D"
+        text_size: self.size
+        halign: 'center'
+        valign: 'middle'
+        disabled: not app.formats.show_numdec_panel
+
+   #Numerator/Denomenator Settings  
+    BoxLayout:
+      size_hint_x: None
+      width: 90 if app.formats.show_numdec_panel else 0
+      opacity: 1 if app.formats.show_numdec_panel else 0
+      orientation: 'vertical'
+      Button:
+        size_hint_y: 0.5
         font_name: "fonts/iosevka-regular.ttf"
         font_size: self.height / 2
         font_style: "bold"
@@ -65,20 +107,9 @@
         halign: 'center'
         valign: 'middle'
         on_release: Factory.Keypad().show(root, 'syncRatioNum')
-
-    BoxLayout:
-      size_hint_x: None
-      width: 100
-      orientation: 'vertical'
-      Label:
-        text: "Den"
-        font_size: self.height / 1.5
-        size_hint_y: 0.3
-        color: app.formats.display_color
-        halign: 'center'
-        valign: 'top'
+        disabled: not app.formats.show_numdec_panel
       Button:
-        size_hint_y: 0.7
+        size_hint_y: 0.5
         font_name: "fonts/iosevka-regular.ttf"
         font_size: self.height / 2
         font_style: "bold"
@@ -89,13 +120,4 @@
         halign: 'center'
         valign: 'middle'
         on_release: Factory.Keypad().show(root, 'syncRatioDen')
-
-  ImageButton:
-#    text: "Zero"
-    source: "pictures/zero-icon-white.png"
-    font_size: 24
-    font_style: "bold"
-    background_color: [0.5, 0.5, 0.5, 1]
-    width: self.height
-    size_hint_x: None
-    on_release: root.zero_position()
+        disabled: not app.formats.show_numdec_panel

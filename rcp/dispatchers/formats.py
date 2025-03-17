@@ -3,7 +3,7 @@ from fractions import Fraction
 from kivy.logger import Logger
 from kivy.properties import (
     NumericProperty,
-    StringProperty, ListProperty, ObjectProperty,
+    StringProperty, ListProperty, ObjectProperty, BooleanProperty,
 )
 
 from rcp.dispatchers import SavingDispatcher
@@ -12,7 +12,7 @@ log = Logger.getChild(__name__)
 
 
 class FormatsDispatcher(SavingDispatcher):
-    _force_save = ['display_color']
+    _force_save = ['display_color', 'display_font', 'show_speed_label', 'show_numdec_panel']  # Add the new property
     metric_position = StringProperty("{:+0.3f}")
     metric_speed = StringProperty("{:+0.3f}")
 
@@ -32,9 +32,23 @@ class FormatsDispatcher(SavingDispatcher):
     cancel_color = ListProperty([1, 0.2, 0.2, 1])
 
     volume = NumericProperty(0.2)
+    display_font = StringProperty('display_font')
+    show_speed_label = BooleanProperty(True)  # New property to toggle speed label visibility
+    show_numdec_panel = BooleanProperty(True)  # New property to toggle speed label visibility
 
     def __init__(self, **kv):
+        # Get the display_font before calling super().__init__
+        # to ensure we don't overwrite the loaded value
+        display_font = kv.get('display_font', "fonts/drofonts/Calculator.ttf")
+        
         super().__init__(**kv)
+        
+        # Only set if not already loaded from saved settings
+        if not self.display_font or self.display_font == "fonts/drofonts/DS-DIGIB.ttf":
+            self.display_font = display_font
+            
+        log.info(f"Initialized FormatsDispatcher with display_font: {self.display_font}")
+        
         self.bind(current_format=self.update_format)
         self.update_format()
 
