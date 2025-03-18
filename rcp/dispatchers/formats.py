@@ -20,7 +20,7 @@ class FormatsDispatcher(SavingDispatcher):
     imperial_speed = StringProperty("{:+0.4f}")
 
     angle_format = StringProperty("{:+0.1f}")
-    angle_speed_format = StringProperty("{:+0.1f} RPM")
+    angle_speed_format = StringProperty("{:+0.1f} r")
 
     current_format = StringProperty("MM")
     speed_format = StringProperty()
