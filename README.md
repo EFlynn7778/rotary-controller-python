@@ -1,5 +1,12 @@
 # Modifications to RCP for Lathe Centric Use.
 
+
+Added thread length ability.
+
+Complete threading cycle with user control at each step. Can set the thread length, start the cycle, and the system will automatically stop at the specified length. 
+Back off in X , then press the button to return to the starting position, press it again to start a next cutting pass. Repeat until thread depth reached. 
+
+
 UI Modifications For Lathe Specific Use and personal preference.  
 Added ability to select font used for DRO's. 
 
