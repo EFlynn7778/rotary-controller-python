@@ -37,7 +37,7 @@ class ElsBar(BoxLayout, SavingDispatcher):
     # New properties for thread length control
     thread_length = NumericProperty(10.0)  # Default thread length in mm/inch (based on current format)
     cycle_active = BooleanProperty(False)
-    cycle_state = NumericProperty(0)  # 0=idle, 1=cutting, 2=waiting, 3=returning
+    cycle_state = NumericProperty(0)  # 0=idle, 1=cutting, 2=waiting, 3=returning_past, 4=returning_exact
     cycle_start_position = NumericProperty(0)
     
     _skip_save = [
@@ -62,6 +62,30 @@ class ElsBar(BoxLayout, SavingDispatcher):
         # Add binding to servo status to detect when motion completes
         if hasattr(self.app, 'servo'):
             self.app.servo.bind(disableControls=self.on_servo_status_change)
+        
+    # Add property getter for backlash amount
+    @property
+    def backlash_amount(self):
+        """
+        Get backlash amount from formats settings in mm
+        Backlash is always stored as mm in the settings
+        """
+        try:
+            return float(self.app.formats.backlash_amount)
+        except (ValueError, AttributeError):
+            return 0.2
+
+    def get_backlash_in_current_units(self):
+        """
+        Get the backlash amount converted to current display units
+        for UI display purposes only
+        """
+        backlash_mm = self.backlash_amount
+        
+        # Convert to current units if necessary
+        if self.app.formats.current_format == "in":
+            return backlash_mm / 25.4  # Convert mm to inches
+        return backlash_mm  # Already in mm
 
     def update_current_position(self):
         Factory.Keypad().show_with_callback(self.servo.set_current_position, self.servo.scaledPosition)
@@ -106,12 +130,27 @@ class ElsBar(BoxLayout, SavingDispatcher):
         if self.cycle_active:
             # If cycle is active but waiting for button press
             if self.cycle_state == 2:  # waiting state
-                # Start return movement
-                self.cycle_state = 3  # returning state
-                # Calculate distance to return
-                return_distance = self.cycle_start_position - self.app.servo.position
+                # Start return movement with backlash compensation
+                self.cycle_state = 3  # returning_past state
+                
+                # Get backlash amount in mm
+                backlash_mm = self.backlash_amount
+                
+                # Convert backlash to machine units if necessary
+                # The servo position is always in the machine's native units,
+                # so we need to ensure backlash uses the same units
+                backlash_machine_units = backlash_mm
+                if hasattr(self.app.servo, 'positionScale') and self.app.servo.positionScale != 1.0:
+                    backlash_machine_units = backlash_mm / self.app.servo.positionScale
+                
+                # The direction depends on which way we were cutting
+                direction = self.app.servo.direction / abs(self.app.servo.direction)  # Get +1 or -1
+                backlash_position = self.cycle_start_position - (direction * backlash_machine_units)
+                
+                # Move past the starting position to take up backlash
                 self.app.servo.servoEnable = 1  # Enable servo
-                self.app.device['servo']['direction'] = return_distance
+                self.app.device['servo']['position'] = backlash_position
+                
             elif self.cycle_state == 0:  # If cycle is in idle state after returning
                 # Start a new cutting pass
                 self.cycle_state = 1  # cutting state
@@ -140,8 +179,6 @@ class ElsBar(BoxLayout, SavingDispatcher):
         if not self.cycle_active:
             return
             
-        current_position = self.app.servo.position
-        
         if self.cycle_state == 1:  # cutting state
             # Calculate distance traveled using scaled position
             distance = abs(self.app.servo.scaledPosition - 
@@ -159,7 +196,14 @@ class ElsBar(BoxLayout, SavingDispatcher):
         if not self.cycle_active:
             return
             
-        # If servo is no longer disabled (movement completed) and we're in returning state
-        if not value and self.cycle_state == 3:
-            # Cycle completed - go to idle state ready for next pass
-            self.cycle_state = 0
+        # If servo is no longer disabled (movement completed)
+        if not value:
+            if self.cycle_state == 3:  # If we just finished moving past the starting position
+                # Now move to the exact starting position
+                self.cycle_state = 4  # returning_exact state
+                self.app.servo.servoEnable = 1  # Enable servo
+                self.app.device['servo']['position'] = self.cycle_start_position
+                
+            elif self.cycle_state == 4:  # If we just finished the final move to starting position
+                # Cycle completed - go to idle state ready for next pass
+                self.cycle_state = 0

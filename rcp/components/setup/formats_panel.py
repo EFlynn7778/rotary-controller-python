@@ -1,12 +1,14 @@
 import os
+from kivy.app import App
 from kivy.lang import Builder
 from kivy.logger import Logger
 from kivy.properties import ObjectProperty, ListProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
+from rcp.components.forms.string_item import StringItem
 
 log = Logger.getChild(__name__)
-kv_file = os.path.join(os.path.dirname(__file__), __file__.replace(".py", ".kv"))
+kv_file = os.path.join(os.path.dirname(__file__), "formats_panel.kv")
 if os.path.exists(kv_file):
     log.info(f"Loading KV file: {kv_file}")
     Builder.load_file(kv_file)
@@ -16,6 +18,8 @@ class FormatsPanel(BoxLayout):
     available_fonts = ListProperty([])
     
     def __init__(self, formats, **kv):
+        from rcp.app import MainApp
+        self.app: MainApp = MainApp.get_running_app()
         self.formats = formats
         
         # Make sure display_font is set in formats
@@ -65,3 +69,40 @@ class FormatsPanel(BoxLayout):
         if font_name in self.available_fonts:
             self.formats.display_font = f"fonts/drofonts/{font_name}"
             log.info(f"Selected font: {self.formats.display_font}")
+    
+    def on_backlash_change(self, instance, value):
+        """
+        Handle backlash amount change with direct property setting
+        since we may not have the convenience methods
+        """
+        try:
+            # Validate first
+            backlash_value = float(value.strip())
+            
+            # Convert if in inches
+            if self.formats.current_format == "in":
+                backlash_value = backlash_value * 25.4  # Convert to mm
+                
+            # Store as mm with proper formatting
+            self.formats.backlash_amount = str(round(backlash_value, 3))
+            
+            # Save settings
+            if hasattr(self.formats, 'save_formats'):
+                self.formats.save_formats()
+            
+            log.info(f"Backlash amount set to: {self.formats.backlash_amount} mm")
+            
+        except ValueError:
+            # If not a valid float, revert to previous value
+            log.warning(f"Invalid backlash value: {value}")
+            # Try to show the value in current display units
+            if hasattr(self.formats, 'get_backlash_display_value'):
+                instance.value = self.formats.get_backlash_display_value()
+            else:
+                # Fallback: show raw value
+                instance.value = self.formats.backlash_amount
+                
+        except Exception as e:
+            log.error(f"Error updating backlash: {e}")
+            import traceback
+            log.error(traceback.format_exc())

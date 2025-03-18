@@ -40,6 +40,10 @@
         name: "Angle Format"
         value: root.formats.angle_format
         on_value: root.formats.angle_format = self.value
+      StringItem:
+        name: "Leadscrew Backlash in mm"
+        value: root.formats.backlash_amount
+        on_value: root.on_backlash_change(self, self.value)
 
       Label:
         size_hint_y: None
