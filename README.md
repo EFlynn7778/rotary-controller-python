@@ -1,5 +1,6 @@
 # Modifications to RCP for Lathe Centric Use.
 
+Leadscrew backlash compensatin added. Unit always set in mm.
 
 Added thread length ability.
 
