@@ -1,0 +1,149 @@
+#: import StringItem rcp.components.forms.string_item
+
+<FormatsPanel>:
+  orientation: "vertical"
+  ScrollView:
+    do_scroll_x: False
+    do_scroll_y: True
+    GridLayout:
+      id: grid_layout
+      cols: 1
+      spacing: 10
+      size_hint_y: None
+      height: self.minimum_height
+      Label:
+        size_hint_y: None
+        height: dp(40)
+        text: "Formats"
+        font_size: '20sp'
+        halign: 'center'
+        valign: 'middle'
+        text_size: self.size
+        bold: True   
+      StringItem:
+        name: "Metric Position"
+        value: root.formats.metric_position
+        on_value: root.formats.metric_position = self.value
+      StringItem:
+        name: "Metric Speed"
+        value: root.formats.metric_speed
+        on_value: root.formats.metric_speed = self.value
+      StringItem:
+        name: "Imperial Position"
+        value: root.formats.imperial_position
+        on_value: root.formats.imperial_position = self.value
+      StringItem:
+        name: "Imperial Speed"
+        value: root.formats.imperial_speed
+        on_value: root.formats.imperial_speed = self.value
+      StringItem:
+        name: "Angle Format"
+        value: root.formats.angle_format
+        on_value: root.formats.angle_format = self.value
+
+      Label:
+        size_hint_y: None
+        height: dp(40)
+        text: "Display Settings"
+        font_size: '20sp'
+        halign: 'center'
+        valign: 'middle'
+        text_size: self.size
+        bold: True      
+
+      # Speed Label Toggle
+      BoxLayout:
+        size_hint_y: None
+        height: dp(50)
+        padding: dp(10)
+        
+        Label:
+          text: "Show Feed Speed Below DRO"
+          size_hint_x: 0.7
+          halign: 'left'
+          valign: 'middle'
+          text_size: self.size
+          
+        Switch:
+          id: speed_label_switch
+          size_hint_x: 0.3
+          active: root.formats.show_speed_label
+          on_active: root.formats.show_speed_label = self.active
+
+      # Num/Dec Toggle
+      BoxLayout:
+        size_hint_y: None
+        height: dp(50)
+        padding: dp(10)
+        
+        Label:
+          text: "Show Numerator/Denominator Panels"
+          size_hint_x: 0.7
+          halign: 'left'
+          valign: 'middle'
+          text_size: self.size
+          
+        Switch:
+          id: numdec_label_switch
+          size_hint_x: 0.3
+          active: root.formats.show_numdec_panel
+          on_active: root.formats.show_numdec_panel = self.active    
+
+      Label:
+        size_hint_y: None
+        height: 32
+        text: "DRO Digits Color"
+      
+      ColorPicker:
+        padding: 10
+        size_hint_y: None
+        height: 320
+        color: root.formats.display_color
+        on_color: root.formats.display_color = self.color
+      
+      
+      # Font Selection
+      BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: None
+        height: dp(150)
+        spacing: 5
+        
+        Label:
+          size_hint_y: None
+          height: dp(30)
+          text: "DRO Font"
+          halign: 'center'
+          valign: 'middle'
+          text_size: self.size
+        
+        BoxLayout:
+          orientation: 'horizontal'
+          halign: 'center'
+          size_hint_y: None
+          height: dp(40)
+          spacing: 10
+          
+          Spinner:
+            id: font_spinner
+            size_hint_x: 0.7
+            text: root.formats.display_font.split('/')[-1] if hasattr(root.formats, 'display_font') else 'Select Font'
+            values: root.available_fonts
+            on_text: root.on_font_selected(self.text)
+                
+        Label:
+          id: font_preview
+          size_hint_y: None
+          height: dp(60)
+          text: "123.456"
+          font_name: root.formats.display_font if hasattr(root.formats, 'display_font') else "fonts/DS-DIGIB.ttf"
+          font_size: '40sp'
+          color: root.formats.display_color
+          halign: 'center'
+          valign: 'middle'
+          canvas.before:
+            Color:
+              rgba: 0, 0, 0, 1
+            Rectangle:
+              pos: self.pos
+              size: self.size
