@@ -185,11 +185,13 @@ class ElsBar(BoxLayout, SavingDispatcher):
                           (self.cycle_start_position * Fraction(self.app.servo.ratioNum, 
                                                               self.app.servo.ratioDen)))
             
+            # The visual indicator will update automatically
+            # through the property binding in the KV file
+            
             # If we've reached the target length
             if distance >= self.thread_length:
                 self.cycle_state = 2  # waiting state
                 self.app.servo.servoEnable = 0  # Stop motion
-                # Flash the button or provide visual indication
 
     def on_servo_status_change(self, instance, value):
         """Handle servo status changes"""

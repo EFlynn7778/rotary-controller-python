@@ -1,6 +1,7 @@
 #: import Factory kivy.factory.Factory
 #: import Keypad components.keypad
 #: import FeedsTablePopup components.home.feeds_table_popup
+#: import ThreadingIndicator rcp.components.home.threading_indicator
 
 <ElsBar>:
   orientation: "horizontal"
@@ -75,20 +76,30 @@
       halign: 'center'
       valign: 'top'
 
-    Button:
+    BoxLayout:
+      orientation: "vertical"
       size_hint_y: 0.7
-      font_name: "fonts/iosevka-regular.ttf"
-      font_size: self.height / 2
-      font_style: "bold"
-      color: [0.0, 0.8, 0.5, 1]
-      background_color: [0.0, 0.0, 0.0, 1]
-      text: app.servo.formattedPosition
-      text_size: self.size
-      halign: 'center'
-      valign: 'middle'
-      #disabled: app.servo.disableControls
-      on_release: app.servo.update_current_position()
-
+      
+      Button:
+        size_hint_y: 0.7
+        font_name: "fonts/iosevka-regular.ttf"
+        font_size: self.height / 2
+        font_style: "bold"
+        color: [0.0, 0.8, 0.5, 1]
+        background_color: [0.0, 0.0, 0.0, 1]
+        text: app.servo.formattedPosition
+        text_size: self.size
+        halign: 'center'
+        valign: 'middle'
+        on_release: app.servo.update_current_position()
+      
+      ThreadingIndicator:
+        id: threading_indicator
+        size_hint_y: 0.3
+        thread_length: root.thread_length
+        current_position: app.servo.scaledPosition - (root.cycle_start_position * Fraction(app.servo.ratioNum, app.servo.ratioDen)) if root.cycle_active else 0
+        cycle_state: root.cycle_state
+        cycle_active: root.cycle_active
 
   # Add thread length controls
   BoxLayout:
@@ -115,7 +126,6 @@
       halign: 'center'
       valign: 'middle'
       on_release: root.show_thread_length_keypad()
-    
       
   # Add thread cycle control button  
   Button:
@@ -123,6 +133,6 @@
     size_hint_x: None
     text: "Start" if not root.cycle_active else ("Next" if root.cycle_state == 2 else "Stop")
     font_size: self.height / 4
-    background_color: app.formats.accept_color if not root.cycle_active or root.cycle_state == 2 else app.formats.cancel_color
+    background_color: [0.0, 0.8, 0.5, 1] if not root.cycle_active or root.cycle_state == 2 else app.formats.cancel_color
     on_release: root.start_thread_cycle() if not root.cycle_active or root.cycle_state == 2 else root.stop_thread_cycle()
 

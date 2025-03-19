@@ -73,7 +73,6 @@ class FormatsPanel(BoxLayout):
     def on_backlash_change(self, instance, value):
         """
         Handle backlash amount change with direct property setting
-        since we may not have the convenience methods
         """
         try:
             # Validate first

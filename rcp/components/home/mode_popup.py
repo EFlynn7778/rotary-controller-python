@@ -15,7 +15,7 @@ class ModePopup(Popup):
         from rcp.app import MainApp
         self.app: MainApp = MainApp.get_running_app()
         super().__init__(**kwargs)
-        self.title = f"Select Mode"
+        self.title = f"Servo Mode"
         self.size_hint = (0.6, 0.8)
         self.auto_dismiss = False
 

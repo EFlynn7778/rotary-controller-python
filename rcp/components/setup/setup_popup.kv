@@ -4,7 +4,7 @@
   id: setup_popup
   screen_manager: screen_manager
   screen_selector: screen_selector
-  title: "Setup"
+  title: "System Settings"
   size_hint: 1, 1
   auto_dismiss: False
   BoxLayout:
@@ -36,9 +36,12 @@
         text: "Settings"
         on_release: root.screen_manager.current = "formats"
       Button:
-        text: "Exit"
+        text: "Home"
         on_release: root.dismiss()
-
+      Button:
+        text: "Exit"
+        on_release: app.stop()
+        
     SetupScreenManager:
       id: screen_manager
       setup_popup: setup_popup
