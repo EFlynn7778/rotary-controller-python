@@ -1,3 +1,34 @@
+# Lathe Centric Modifications to RCP, and other enhancements.
+ 
+ Added Thread Length Limit ability. Indicator showing position and direction. Clicking indicator will change direction. Defaults Right to left for right hand thread.
+ 
+ Added Leadscrew Backlash Compensation in settings.
+ 
+ Added ability to turn on/off the feed displays under the DRO's, and the numerator/denominator panels independently. DRO's resize accordingly. 
+ 
+ Added ability to select DRO font in settings.
+ 
+ Visual thread cycle indications.
+ 
+ Various other minor adjustments/enhancements. 
+ 
+ 
+ ![alt text](https://github.com/EFlynn7778/rotary-controller-python/blob/main/RCPPics/Home.jpg)
+ 
+ ![alt text](https://github.com/EFlynn7778/rotary-controller-python/blob/main/RCPPics/HomeNoFeed.jpg)
+ 
+ ![alt text](https://github.com/EFlynn7778/rotary-controller-python/blob/main/RCPPics/HomeNoNumDec.jpg)
+ 
+ ![alt text](https://github.com/EFlynn7778/rotary-controller-python/blob/main/RCPPics/Settings.jpg)
+ 
+ ![alt text](https://github.com/EFlynn7778/rotary-controller-python/blob/main/RCPPics/Setup.jpg)
+ 
+ 
+ 
+
+
+
+
 # Rotary Controller Python
 
 This project is a Kivy based user interface developed for the Raspberry PI for the control of rotary tables and
