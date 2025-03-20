@@ -2,7 +2,33 @@
     size_hint_y: 0.1
     canvas.before:
         Color:
-            rgba: 0.1, 0.1, 0.1, 0.5
+            rgba: 0.1, 0.1, 0.1, 1
         Rectangle:
             pos: self.pos
             size: self.size
+    
+    canvas:
+        # Background bar
+        Color:
+            rgba: 0.3, 0.3, 0.3, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        
+        # Progress indicator
+        Color:
+            # Green during cutting, yellow when waiting, blue when returning
+            rgba: (0, 0.8, 0, 1) if root.cycle_state == 1 else ((0.8, 0.8, 0, 1) if root.cycle_state == 2 else ((0, 0.5, 0.8, 1) if root.cycle_state in [3, 4] else (0.3, 0.3, 0.3, 1)))
+        
+        # Direction-sensitive progress bar
+        Rectangle:
+            pos: (self.right - (min(abs(root.current_position), root.thread_length) / root.thread_length * self.width), self.y) if root.right_to_left else (self.x, self.y)
+            size: (min(abs(root.current_position), root.thread_length) / root.thread_length * self.width, self.height) if root.cycle_active else (0, self.height)
+    
+    # Direction indicator text
+    text: "←" if root.right_to_left else "→"
+    color: 0.7, 0.7, 0.7, 1
+    font_size: self.height * 0.6
+    halign: "center"
+    valign: "middle"
+    opacity: 0.5 if not root.cycle_active else 1

@@ -1,17 +1,23 @@
-from kivy.uix.widget import Widget
+from kivy.uix.button import Button
 from kivy.properties import NumericProperty, BooleanProperty
-from kivy.graphics import Color, Rectangle, Line, Ellipse
+from kivy.graphics import Color, Rectangle, Line, Ellipse, Triangle
+from kivy.logger import Logger
 from fractions import Fraction
 
-class ThreadingIndicator(Widget):
+log = Logger.getChild(__name__)
+
+class ThreadingIndicator(Button):
     """Visual indicator for threading operations showing position and cycle state"""
     thread_length = NumericProperty(10.0)
     current_position = NumericProperty(0.0)
     cycle_state = NumericProperty(0)  # 0=idle, 1=cutting, 2=waiting, 3=returning_past, 4=returning_exact
     cycle_active = BooleanProperty(False)
+    right_to_left = BooleanProperty(True)  # Add property to track direction
     
     def __init__(self, **kwargs):
         super(ThreadingIndicator, self).__init__(**kwargs)
+        self.background_normal = ''  # Remove button background
+        self.background_down = ''    # Remove button press effect
         self.bind(pos=self.update_graphics)
         self.bind(size=self.update_graphics)
         self.bind(thread_length=self.update_graphics)
@@ -36,7 +42,7 @@ class ThreadingIndicator(Widget):
             # Calculate position indicator - inverted for right to left operation
             progress = min(1.0, max(0.0, abs(self.current_position) / self.thread_length)) if self.thread_length > 0 else 0
             # Invert the position to go from right to left
-            position_x = x_margin + bar_width - (progress * bar_width)
+            position_x = x_margin + bar_width - (progress * bar_width) if self.right_to_left else x_margin + (progress * bar_width)
             
             # Background color based on state
             if self.cycle_active:
@@ -87,5 +93,13 @@ class ThreadingIndicator(Widget):
             ]
             
             # Draw triangle
-            from kivy.graphics import Triangle
             Triangle(points=triangle_points)
+            
+    def toggle_direction(self):
+        """Toggle the indicator direction between right-to-left and left-to-right"""
+        self.right_to_left = not self.right_to_left
+        log.info(f"Threading indicator direction: {'right-to-left' if self.right_to_left else 'left-to-right'}")
+        
+    def on_release(self):
+        """Handle button press to toggle direction"""
+        self.toggle_direction()

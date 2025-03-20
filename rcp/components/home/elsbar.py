@@ -63,6 +63,9 @@ class ElsBar(BoxLayout, SavingDispatcher):
         if hasattr(self.app, 'servo'):
             self.app.servo.bind(disableControls=self.on_servo_status_change)
         
+        # Add binding to format changes to update thread length units
+        self.app.formats.bind(current_format=self.on_format_change)
+        
     # Add property getter for backlash amount
     @property
     def backlash_amount(self):
@@ -115,8 +118,9 @@ class ElsBar(BoxLayout, SavingDispatcher):
 
     def set_thread_length(self, value):
         """Set the thread length from keypad input"""
-        self.thread_length = float(value)
-        self.save_settings()
+        # Value is already in current display units, so set directly
+        self.thread_length = value
+        log.info(f"Thread length set to {self.thread_length} {self.app.formats.current_format}")
     
     def show_thread_length_keypad(self):
         """Show keypad to set thread length"""
@@ -209,3 +213,22 @@ class ElsBar(BoxLayout, SavingDispatcher):
             elif self.cycle_state == 4:  # If we just finished the final move to starting position
                 # Cycle completed - go to idle state ready for next pass
                 self.cycle_state = 0
+
+    def on_format_change(self, instance, value):
+        """Handle unit format changes by converting thread length to new units"""
+        # Get the factor from the formats dispatcher
+        factor = 1.0
+        if hasattr(instance, 'formats_dict') and value.lower() in instance.formats_dict:
+            factor = instance.formats_dict[value.lower()]
+        
+        # For metric to imperial (mm to inches)
+        if value.lower() == "in":
+            # Convert from mm to inches
+            self.thread_length = self.thread_length / 25.4
+        # For imperial to metric (inches to mm)
+        elif value.lower() == "mm" and self.thread_length < 100:  
+            # Assume small values are in inches and need conversion to mm
+            # The < 100 check helps avoid multiple conversions
+            self.thread_length = self.thread_length * 25.4
+        
+        log.info(f"Thread length converted to {self.thread_length} {value}")
