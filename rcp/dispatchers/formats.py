@@ -36,7 +36,7 @@ class FormatsDispatcher(SavingDispatcher):
     cancel_color = ListProperty([1, 0.2, 0.2, 1])
 
     volume = NumericProperty(0.2)
-    display_font = StringProperty('display_font')
+    display_font = StringProperty("fonts/drofonts/Calculator.ttf")
     show_speed_label = BooleanProperty(True)  # New property to toggle speed label visibility
     show_numdec_panel = BooleanProperty(True)  # New property to toggle speed label visibility
 
