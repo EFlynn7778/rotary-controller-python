@@ -2,6 +2,7 @@
 #: import Keypad components.keypad
 #: import FeedsTablePopup components.home.feeds_table_popup
 #: import ThreadingIndicator rcp.components.home.threading_indicator
+#: import Fraction fractions.Fraction
 
 <ElsBar>:
   orientation: "horizontal"
@@ -97,7 +98,8 @@
         id: threading_indicator
         size_hint_y: 0.3
         thread_length: root.thread_length
-        current_position: app.servo.scaledPosition - (root.cycle_start_position * Fraction(app.servo.ratioNum, app.servo.ratioDen)) if root.cycle_active else 0
+        #current_position: root.get_scaled_cycle_position() if root.cycle_active else 0
+        current_position: 0
         cycle_state: root.cycle_state
         cycle_active: root.cycle_active
 

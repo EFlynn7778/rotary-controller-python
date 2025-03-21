@@ -6,6 +6,7 @@ from kivy.properties import ObjectProperty, ListProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 from rcp.components.forms.string_item import StringItem
+from rcp.components.home.statusbar import StatusBar  # Import StatusBar
 
 log = Logger.getChild(__name__)
 kv_file = os.path.join(os.path.dirname(__file__), "formats_panel.kv")
@@ -27,6 +28,11 @@ class FormatsPanel(BoxLayout):
             self.formats.display_font = "fonts/drofonts/DS-DIGIB.ttf"
             
         super().__init__(**kv)
+        
+        # Add StatusBar at the top
+        self.status_bar = StatusBar()
+        self.add_widget(self.status_bar, index=len(self.children))  # Add at the top
+        
         self.ids['grid_layout'].bind(minimum_height=self.ids['grid_layout'].setter('height'))
         self.load_available_fonts()
         

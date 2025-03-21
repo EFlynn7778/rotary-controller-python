@@ -232,3 +232,17 @@ class ElsBar(BoxLayout, SavingDispatcher):
             self.thread_length = self.thread_length * 25.4
         
         log.info(f"Thread length converted to {self.thread_length} {value}")
+
+    def get_scaled_cycle_position(self):
+        """Calculate the current position in the threading cycle, scaled to the current ratio"""
+        if not self.cycle_active:
+            return 0
+        
+        # Use Fraction to handle precise ratio calculations
+        from fractions import Fraction
+        position_fraction = abs(self.app.servo.scaledPosition - 
+                      (self.cycle_start_position * Fraction(self.app.servo.ratioNum, 
+                                                          self.app.servo.ratioDen)))
+        
+        # Convert Fraction to float before returning
+        return float(position_fraction)

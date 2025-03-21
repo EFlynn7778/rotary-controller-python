@@ -2,7 +2,9 @@ from keke import ktrace
 from kivy.base import EventLoop
 from kivy.logger import Logger, KivyFormatter
 from kivy.core.window import Window
-
+from fractions import Fraction
+from kivy.lang import global_idmap
+global_idmap['Fraction'] = Fraction
 
 log = Logger.getChild(__name__)
 
