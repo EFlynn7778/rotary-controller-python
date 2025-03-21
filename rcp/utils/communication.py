@@ -9,8 +9,8 @@ log = logging.getLogger(__name__)
 
 class ConnectionManager:
     def __init__(
-        #self, serial_device="/dev/ttyUSB0", baudrate=115200, address=17, debug=False
-        self, serial_device="COM29", baudrate=115200, address=17, debug=False
+        self, serial_device="/dev/ttyUSB0", baudrate=115200, address=17, debug=False
+        #self, serial_device="COM26", baudrate=115200, address=17, debug=False
     ):
         try:
             self.device: minimalmodbus.Instrument = minimalmodbus.Instrument(
