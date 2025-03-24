@@ -1,4 +1,6 @@
 # Lathe Centric Modifications to RCP, and other enhancements.
+
+ Tested working on Pi3, Pi4, Pi5 and Bigtreetech CB1, BTT-Pi and Bigtreetech Pad7 (CB1 based).  CB1/BTT-Pi/Pad7 requires python3.11-venv to be installed manually.
  
  Added Thread Length Limit ability. Indicator showing position and direction. Clicking indicator will change direction. Defaults Right to left for right hand thread.
  
