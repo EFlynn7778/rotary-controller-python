@@ -22,10 +22,12 @@ class StatusBar(BoxLayout):
         self.size_hint = (1, None)
         self.height = 32
         self.orientation = "horizontal"
+
+        # Link Status LED
         com_led = LedButton(
             size_hint_x=None,
-            width=64,
-            label="COM"
+            width=72,
+            label="LINK"
         )
         self.add_widget(com_led)
 
@@ -39,7 +41,7 @@ class StatusBar(BoxLayout):
 
         interval_led = LedButton(
             size_hint_x=None,
-            width=64,
+            width=72,
             label=""
         )
         self.add_widget(interval_led)
@@ -50,7 +52,7 @@ class StatusBar(BoxLayout):
 
         fps_led = LedButton(
             size_hint_x=None,
-            width=64,
+            width=72,
             label=""
         )
         self.add_widget(fps_led)
@@ -61,7 +63,7 @@ class StatusBar(BoxLayout):
 
         cycles_led = LedButton(
             size_hint_x=None,
-            width=64,
+            width=72,
             label=""
         )
         self.add_widget(cycles_led)

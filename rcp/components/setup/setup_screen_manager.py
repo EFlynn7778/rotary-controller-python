@@ -9,6 +9,7 @@ from kivy.uix.screenmanager import Screen, ScreenManager, NoTransition
 from rcp.components.setup.scale_panel import ScalePanel
 from rcp.components.setup.servo_panel import ServoPanel
 from rcp.components.setup.formats_panel import FormatsPanel
+#from rcp.components.setup.network_panel import NetworkPanel
 
 log = Logger.getChild(__name__)
 kv_file = os.path.join(os.path.dirname(__file__), __file__.replace(".py", ".kv"))
@@ -36,10 +37,10 @@ class SetupScreenManager(ScreenManager):
         screen.add_widget(ServoPanel(servo=app.servo))
         self.add_widget(screen)
 
-        # TODO: Disable network for now, need to finish working on this
-        # screen = Screen(name="network")
-        # screen.add_widget(NetworkPanel())
-        # self.add_widget(screen)
+        # Disable network for now, need to finish working on this
+        #screen = Screen(name="network")
+        #screen.add_widget(NetworkPanel())
+        #self.add_widget(screen)
 
         screen = Screen(name="formats")
         screen.add_widget(FormatsPanel(formats=app.formats))

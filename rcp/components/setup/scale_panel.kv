@@ -44,3 +44,26 @@
         name: "Spindle Mode"
         value: root.scale.spindleMode
         on_value: root.scale.spindleMode = self.value
+      BooleanItem:
+        name: "Hide Scale DRO"
+        #value: root.scale.spindleMode
+        #on_value: root.scale.spindleMode = self.value  
+        
+      Label:
+        size_hint_y: None
+        height: dp(40)
+        text: "Scale Configuration Help"
+        font_size: '20sp'
+        halign: 'center'
+        valign: 'middle'
+        text_size: self.size
+        bold: True
+        
+      Label:
+        size_hint_y: None
+        height: self.texture_size[1] + dp(20)
+        text: app.load_help("scales.rst")
+        text_size: self.width - dp(20), None
+        padding: dp(10), dp(10)
+        halign: 'left'
+        valign: 'top'  

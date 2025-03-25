@@ -184,7 +184,8 @@ class CoordBar(BoxLayout, SavingDispatcher):
             raw_offset = value / self.app.formats.factor
             self.offsets[self.app.currentOffset] = float(raw_offset - raw_position)
             self.save_settings()
-            self.update_scaledPosition()
+            # Fixed line: pass self and None as arguments
+            self.update_scaledPosition(self, None)
 
     def update_position(self):
         if not self.spindleMode:

@@ -14,6 +14,16 @@ if os.path.exists(kv_file):
     log.info(f"Loading KV file: {kv_file}")
     Builder.load_file(kv_file)
 
+# Cache font list to avoid reloading each time
+_cached_fonts = None
+
+def get_available_fonts():
+    global _cached_fonts
+    if _cached_fonts is None:
+        # Load fonts logic here
+        _cached_fonts = [...]
+    return _cached_fonts
+
 class FormatsPanel(BoxLayout):
     formats = ObjectProperty()
     available_fonts = ListProperty([])

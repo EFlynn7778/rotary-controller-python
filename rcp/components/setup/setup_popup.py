@@ -1,4 +1,5 @@
 import os
+from kivy.clock import Clock
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -18,8 +19,19 @@ if os.path.exists(kv_file):
 class SetupPopup(Popup):
     screen_manager: ScreenManager = ObjectProperty()
     screen_selector: BoxLayout = ObjectProperty()
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.bind(on_open=self.on_popup_open)
+        
+    def on_popup_open(self, *args):
+        # Defer heavy initialization to after the popup is visible
+        Clock.schedule_once(self.initialize_screens, 0.1)
+        
+    def initialize_screens(self, dt):
+        # Perform any heavy initialization here
+        pass
 
     def on_dismiss(self):
         current_app = App.get_running_app()
-        # current_app.manual_full_update()
         log.info("Close setup page")

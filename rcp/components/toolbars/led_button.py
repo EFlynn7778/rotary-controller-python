@@ -15,8 +15,8 @@ if os.path.exists(kv_file):
 
 
 class LedButton(ButtonBehavior, BoxLayout):
-    color_on = ColorProperty("#ffcc32a0")
-    color_off = ColorProperty("#ffcc3220")
+    color_off = ColorProperty("#1b7a17a0")
+    color_on = ColorProperty("#1b7a1750")
     label = StringProperty()
     checkbox_value = BooleanProperty()
     current_color = ColorProperty((0, 0, 0, 1))
